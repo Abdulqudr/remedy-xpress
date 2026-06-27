@@ -26,8 +26,18 @@ if (!basePath) {
   );
 }
 
+// The user's secrets were entered in swapped fields:
+// NEXT_PUBLIC_SUPABASE_URL  → actually contains the anon KEY (JWT)
+// NEXT_PUBLIC_SUPABASE_ANON_KEY → actually contains the project URL
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? ''
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_URL ?? ''
+
 export default defineConfig({
   base: basePath,
+  define: {
+    '__SUPABASE_URL__': JSON.stringify(supabaseUrl),
+    '__SUPABASE_ANON_KEY__': JSON.stringify(supabaseAnonKey),
+  },
   plugins: [
     react(),
     tailwindcss(),
